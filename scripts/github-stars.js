@@ -11,7 +11,7 @@
  *   value or the plain "Star on GitHub" label.
  */
 (function githubStars() {
-  var REPO = 'jasonkneen/tiny-world-builder';
+  var REPO = 'JoeMighty/Tiny-World';
   var CACHE_KEY = 'tw:gh-stars';
 
   var pill = document.getElementById('gh-stars-pill');

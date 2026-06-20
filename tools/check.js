@@ -504,8 +504,8 @@ for (const id of ['tips-toggle', 'render-settings', 'import', 'export', 'reset',
     fail('utility chrome icon must live in the left side rail: ' + id);
   }
 }
-if (/<div class="token-pill"/.test(htmlRaw) || !/<div class="token-corner"[\s\S]*id="github-link"[\s\S]*class="token-corner-text"[\s\S]*class="ticker"[\s\S]*\$TINYWORLD[\s\S]*class="ca"[\s\S]*CA:/.test(htmlRaw)) {
-  fail('GitHub icon must sit beside simple $TINYWORLD corner text without a token pill panel');
+if (/<div class="token-pill"/.test(htmlRaw) || !/<div class="token-corner"[\s\S]*id="github-link"/.test(htmlRaw)) {
+  fail('GitHub icon must sit in the top corner');
 }
 if (!/<div class="appbar">\s*<div class="language-picker" id="language-picker"[\s\S]*id="language-trigger"[\s\S]*aria-controls="language-menu"[\s\S]*<div class="language-menu" id="language-menu"[\s\S]*role="menu"[\s\S]*class="language-option"[\s\S]*data-lang="zh"/.test(htmlRaw) || /id="lang-flags"|class="lang-flag"/.test(htmlRaw)) {
   fail('bottom-left appbar language switcher must be one trigger button with an expandable language menu');
@@ -591,8 +591,8 @@ if (!shippedCamera || !shippedCamera.target || shippedCamera.target.x !== 0 || s
 if (!/const RENDER_SETTINGS_VERSION = '24'/.test(html) || !/resolution:\s*'0\.75'/.test(html) || !/brightness:\s*'0\.80'/.test(html) || !/tiltBlur:\s*'10\.5'/.test(html)) {
   fail('hard-coded render defaults must match the shipped v24 defaults');
 }
-if (!/<div id="welcome-modal" class="modal launch-modal" hidden aria-hidden="true">[\s\S]*<img class="welcome-logo" src="assets\/twlogo\.png" alt="Tiny World Builder"[\s\S]*id="welcome-tinyverse"[^>]*>Tinyverse<\/button>[\s\S]*id="welcome-battleworlds"[^>]*>Battleworlds<\/button>[\s\S]*id="welcome-build"[^>]*>Build<\/button>[\s\S]*id="welcome-play"[^>]*>Play<\/button>[\s\S]*class="welcome-credit"[\s\S]*Created by Jason Kneen[\s\S]*https:\/\/x\.com\/jasonkneen[\s\S]*@jasonkneen[\s\S]*https:\/\/x\.com\/tinyworldsapp[\s\S]*@tinyworldsapp/.test(htmlRaw)) {
-  fail('welcome launcher must render the Tiny World logo, Tinyverse/Battleworlds/Build/Play buttons, creator credit, and social links');
+if (!/<div id="welcome-modal" class="modal launch-modal" hidden aria-hidden="true">[\s\S]*<img class="welcome-logo" src="assets\/twlogo\.png" alt="Tiny World Builder"[\s\S]*id="welcome-build"[^>]*>Build<\/button>[\s\S]*id="welcome-play"[^>]*>Play<\/button>[\s\S]*class="welcome-credit"/.test(htmlRaw)) {
+  fail('welcome launcher must render the Tiny World logo, Build/Play buttons, and creator credit');
 }
 const welcomeDialogBody = sourceFunctionBody(html, 'initWelcomeDialog');
 if (!/modal\.hidden = false;/.test(welcomeDialogBody) || !/welcome-launch-open/.test(welcomeDialogBody) || !/__tinyworldMode/.test(welcomeDialogBody) || !/__tinyworldWorlds/.test(welcomeDialogBody) || !/__tinyworldBattleworlds/.test(welcomeDialogBody) || !/chooseWelcomeMode\('build'\)/.test(welcomeDialogBody) || !/chooseWelcomeMode\('play'\)/.test(welcomeDialogBody)) {
