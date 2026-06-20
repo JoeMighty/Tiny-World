@@ -1506,25 +1506,8 @@
     document.getElementById('auth-show-login').addEventListener('click', () => showForm('login'));
     document.getElementById('auth-back-login').addEventListener('click', () => showForm('login'));
 
-    // OAuth providers: show only providers enabled in Netlify Identity settings.
-    ['google', 'github'].forEach(provider => {
-      const login = document.getElementById('auth-' + provider + '-login');
-      const signup = document.getElementById('auth-' + provider + '-signup');
-      if (login) login.addEventListener('click', () => Auth.oauthLogin(provider));
-      if (signup) signup.addEventListener('click', () => Auth.oauthLogin(provider));
-    });
-    Auth.getSettings().then(settings => {
-      const providers = settings && settings.providers ? settings.providers : {};
-      const enabled = ['google', 'github'].filter(provider => providers[provider]);
-      enabled.forEach(provider => {
-        const login = document.getElementById('auth-' + provider + '-login');
-        const signup = document.getElementById('auth-' + provider + '-signup');
-        if (login) login.hidden = false;
-        if (signup) signup.hidden = false;
-      });
-      document.getElementById('auth-oauth-login').hidden = enabled.length === 0;
-      document.getElementById('auth-oauth-signup').hidden = enabled.length === 0;
-    }).catch(() => {});
+    // Social sign-in (Google/GitHub) intentionally disabled — email/password only.
+    // The OAuth sections in the markup stay hidden because nothing reveals them.
 
     // Tracks the live login state so gated controls can react to it.
     // Anonymous users get the app, settings/AI/cloud are locked.
