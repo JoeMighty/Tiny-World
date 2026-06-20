@@ -1,0 +1,35 @@
+.DS_Store
+.env
+.tinyworld-ai-logs/
+.grok/
+context.md
+models/stamp-defaults.local.json
+node_modules/
+*.log
+/.playwright-mcp
+dist/
+*.zip
+# Local Netlify folder
+.netlify
+.partykit/
+.claude/worktrees/agent-a17895f4/
+.claude/worktrees/agent-a35bb1ef/
+.claude/worktrees/agent-a6b44378/
+/.antigravitycli
+.gstack/
+/.gstack
+/.contex
+/.codesurf
+/models/3d
+.mcp.json
+.codesurf/mcp-server.json
+
+# Local-only Cluso feedback widget (dev-server injected, never shipped)
+cluso/
+/.worktrees
+/.polly
+plans/autonomous-agentic-team.md
+plans/drafts/agent-spec-format.md
+plans/drafts/future-migrations.draft.sql
+plans/wave-launch-system.md
+.polly/registry.json
