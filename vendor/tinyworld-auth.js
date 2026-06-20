@@ -14,9 +14,19 @@ function loadClerkScript() {
   });
 }
 
+// True only when publish.sh substituted a real Clerk publishable key. Guards
+// against booting Clerk with the unsubstituted placeholder, which throws and
+// would otherwise abort the whole app boot (blank builder).
+function isClerkConfigured() {
+  return /^pk_(test|live)_/.test(PUBLISHABLE_KEY);
+}
+
 let _clerk = null;
 async function getClerk() {
   if (_clerk) return _clerk;
+  if (!isClerkConfigured()) {
+    throw new ClerkAuthError('Sign-in is not configured yet. Set CLERK_PUBLISHABLE_KEY in the deploy environment and redeploy.', 503);
+  }
   await loadClerkScript();
   _clerk = new window.Clerk(PUBLISHABLE_KEY);
   await _clerk.load();
@@ -66,9 +76,17 @@ window.TinyWorldAuth = {
   MissingIdentityError: ClerkMissingIdentityError,
   AUTH_EVENTS: { LOGIN: 'SIGNED_IN', LOGOUT: 'SIGNED_OUT', SIGNUP: 'SIGNED_UP' },
 
+  // Called during boot. MUST NOT throw — a thrown error here aborts the app's
+  // boot sequence and leaves an empty builder. On any failure (Clerk not
+  // configured, script blocked, network down) we report "no user" so the app
+  // boots into anonymous mode and loads the default world.
   async getUser() {
-    const clerk = await getClerk();
-    return adaptUser(clerk.user);
+    try {
+      const clerk = await getClerk();
+      return adaptUser(clerk.user);
+    } catch (_) {
+      return null;
+    }
   },
 
   async login(email, password) {
@@ -170,7 +188,7 @@ window.TinyWorldAuth = {
       clerk.addListener(({ session }) => {
         callback(session ? 'SIGNED_IN' : 'SIGNED_OUT', session ? adaptUser(clerk.user) : null);
       });
-    });
+    }).catch(() => {});
   },
 };
 
